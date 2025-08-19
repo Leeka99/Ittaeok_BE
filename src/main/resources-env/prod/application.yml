@@ -95,7 +95,7 @@ logging:
             sql: info
 
 url:
-  backend: https://api.ittaeok.com # SM 붙이기
+  backend: https://backend.ittaeok.com # SM 붙이기
 front-server:
   domain-A: https://ittaeok.com # SM 붙이기
   domain-B: https://www.ittaeok.com # SM 붙이기
