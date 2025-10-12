@@ -21,6 +21,7 @@ spring:
             non_contextual_creation: true
         id:
           new_generator_mappings: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
   docker:
     compose:
       lifecycle-management: start-only
