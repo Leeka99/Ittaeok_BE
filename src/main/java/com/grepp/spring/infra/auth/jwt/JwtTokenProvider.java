@@ -122,9 +122,14 @@ public class JwtTokenProvider {
         principal.setAccessToken(accessToken);
         return new UsernamePasswordAuthenticationToken(principal, "", authorities);
     }
-    
+
+    // 만료된 토큰이라도 Claims를 반환
     public Claims getClaims(String accessToken) {
-        return parseClaims(accessToken);
+        try {
+            return parseClaims(accessToken);
+        } catch (ExpiredJwtException e) {
+            return  e.getClaims();
+        }
     }
     
     // 토큰 유효성 검증
