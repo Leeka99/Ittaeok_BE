@@ -1,215 +1,53 @@
-# 🐰 클릭 몇 번으로 일정 합의 완료, 이때어때 (Ittaeok)
+# 🔎오픈 미션
 
-### 효율적인 일정 조율을 위한 통합 스케줄링 플랫폼<br>
-개인과 그룹의 일정 조율 과정에서 발생하는 비효율성을 해결하고 모든 구성원이 참여하지 못하는<br>
-현실적인 상황을 고려하여 유연한 일정 관리 서비스를 제공합니다.
-
-<img width="1200" height="630" alt="Frame_2608805" src="https://github.com/user-attachments/assets/2b889840-dbb1-4378-a453-7024cd385578" />
-
-## [이때어때](https://ittaeok.com)
-
-## [시연](https://www.youtube.com/watch?v=coeKWbkHD6g)
-
-## 📝 서비스 소개
-
-### 🗓️ 일정 조율
-- 한번 모임(일회성 일정)과 자주 모임(그룹 일) 두 가지 형태 중 선택이 가능해요.
-- 모임 날짜와 시간을 정하고, 참여 인원과 온/오프라인 여부를 설정해서 새로운 일정을 만들 수 있어요.
-- 일정에 초대받은 사람들은 각자 가능한 시간을 입력하면 돼요.
-- 모두의 시간을 모아서 최적의 시간대를 추천해 줘요. 그중 하나를 골라 모임을 확정해 보세요.
-
-### 🗺️ 모임 장소 지정
-- 오프라인 모임일 경우, 모임에 참여하는 사람들의 출발지를 기준으로 가장 합리적인 중간 지점을 추천해 드려요.
-- 추천받은 여러 지점 중에서 투표로 중간 지점을 확정할 수 있어요.
-- 투표로 정해진 지역 내에서 카페, 회의장 등 세부 모임 장소를 지정할 수 있어요.
-
-### 📌 편리한 워크스페이스 및 연동
-- 확정된 일정의 상세 페이지에 깃허브, 노션, 피그마 등 다양한 URL을 등록하고 공유할 수 있어요.
-- 온라인 모임이라면 자동으로 Zoom 회의실을 생성해 드려요.
-- 구글 캘린더를 연동하면, 나의 캘린더 일정을 서비스에서 한 번에 관리할 수 있어요.
-
-### 👥 그룹 관리
-- 자주 만나는 모임을 그룹으로 만들어 관리할 수 있어요. 카카오톡으로 초대 링크를 보내면 멤버들이 쉽게 참여할 수 있죠.
-- 초대 링크를 누르면, 소셜 로그인 후 바로 그룹에 참여할 수 있어요.
-- 그룹 내 멤버들과 새로운 일정을 만들거나, 이미 있는 개인 일정을 그룹으로 가져올 수 있어요.
-- 그룹장은 멤버를 확인하고, 내보내거나, 그룹장 권한을 주거나 회수할 수 있어요.
-- 그룹원별 참여율, 요일/장소별 모임 횟수를 통계로 보여줘서 그룹을 더 효과적으로 운영하는 데 도움을 받을 수 있어요.
-
-### ✨ 나만을 위한 기능
-- 대시보드에서 선택한 날짜의 일정을 확인할 수 있고, 어느 모임의 일정인지도 볼 수 있어요.
-- 자주 이용하는 출발역이나 선호하는 시간대를 등록해서, 매번 똑같은 정보를 다시 입력하지 않아도 돼요.
-
+--- 
+### 📢 오픈 미션 소개
+> - 오픈 미션은 2주 동안 자신이 도전하고 싶은 주제를 정해 직접 계획을 세우고 실행해보는 프리코스 자율 챌린지입니다.<br>
+> - 스스로 목표를 세우고 해결 과정을 경험하며 성장하는 것을 목표로 합니다.
 
 ---
-## 🧑‍💻 팀원 소개
-
-<div align="center">
-
-<table>
-  <tbody>
-    <tr>
-      <td align="center">
-        <img src="https://img.shields.io/badge/Team%20Member-000000" /><br> <a href="https://github.com/june3780"><img src="https://github.com/june3780.png" width="100px;" alt="안준희"/></a> </td>
-      <td align="center">
-        <img src="https://img.shields.io/badge/Backend%20Leader-04e0d5" /><br> <a href="https://github.com/Leeka99"><img src="https://github.com/Leeka99.png" width="100px;" alt="이강현"/></a> </td>
-      <td align="center">
-        <img src="https://img.shields.io/badge/Product%20Owner-%2300264B" /><br> <a href="https://github.com/leeseojun34"><img src="https://github.com/leeseojun34.png" width="100px;" alt="이서준"/></a> </td>
-      <td align="center">
-        <img src="https://img.shields.io/badge/Team%20Member-8629f9" /><br> <a href="https://github.com/yoozafree"><img src="https://github.com/yoozafree.png" width="100px;" alt="정서윤"/></a> </td>
-      <td align="center">
-        <img src="https://img.shields.io/badge/Team%20Member-fb69a3" /><br> <a href="https://github.com/qkqehenr7"><img src="https://github.com/qkqehenr7.png" width="100px;" alt="최동준"/></a> </td>
-    </tr>
-    <tr>
-      <td align="center"><b>안준희</b></td> <td align="center"><b>이강현</b></td> <td align="center"><b>이서준</b></td> <td align="center"><b>정서윤</b></td> <td align="center"><b>최동준</b></td> </tr>
-  </tbody>
-</table>
-
-</div>
-
----
-
-
-## 📍 System Architecture
-
-<div align="center">
-<img width="1374" height="765" alt="system Architecture" src="https://github.com/user-attachments/assets/450608c2-bd68-4d37-9bc7-ba88f3dc28ea" />
-</div>
-<br/>
-
----
-
-## 📊 ERD
-<div align="center">
-<img width="2592" height="1831" alt="ERD" src="https://github.com/user-attachments/assets/5c0df536-3a13-4c11-af2c-c8a748e14fa7" />
-
-</div>
-<br/>
+> ## 1️⃣ 첫 번째 미션 소개
+>> <b>주제</b> : Schedule 도메인에 대해서 지연 로징(N + 1) 문제 해결하기<br>
+>> <b>기간</b> : 2025.11.04 ~ 2025.11.10
+>
+> ### 📌 주제 선정 이유 <br>
+>> - 프로젝트 내 엔티티를 살펴보니 `@OneToMany`, `@ManyToOne`, `@OneToOne` 과 같은 연관관계를 많이 사용하고 있었습니다.<br> 
+>> - 이러한 연관관계로 인해, 연관 엔티티 접근 시 불필요하게 반복되는 DB 쿼리가 발생할 가능성이 높다고 판단했습니다.<br>
+>> - 실제 SQL 로그와 로깅 레벨을 통해 확인한 결과, select 쿼리가 반복적으로 발생하는 현상을 발견했습니다. <br> 
+>> - 따라서 지연 로딩으로 인한 성능 문제를 해결하고자 했습니다.
+> 
+> ### ✔️ 작업 목록 
+>> - [ ] 1.테스트 환경 준비
+>>   - [ ] application.yml에 SQL 로그 출력 설정
+>>   - [ ] DB 환경 구성
+>>   - [ ] 기본 엔티티 테스트 데이터 준비
+>
+>> - [ ] 2.문제 확인
+>>   - [ ] Swagger나 Postman으로 조회 시 다수의 SELECT 쿼리가 발생하는지 확인 
+>>   - [ ] 동일 테스트를 통합 테스트 코드로 옮겨 실제 SQL 로그 확인
+>>   - [ ] Schedule 조회 시 연관된 엔티티에서 N+1 발생 구간 식별 
+>>   - [ ] 해당 문제를 재현하는 테스트 코드 작성
+>
+>> - [ ] 3.지연 로딩 원인 분석 및 해결 전략 조사
+>>   - [ ] `FetchType.LAZY`, `FetchType.EAGER` 차이 분석
+>>   - [ ] `@EntityGraph`, `fetch join`, `BatchSize`, `DTO 변환` 등 해결 방법 정리
+>>   - [ ] 현재 구조에서 가장 적합한 전략 선정
+>
+>> - [ ] 4.개선 확인 테스트
+>>   - [ ] 수정된 코드 기반으로 통합 테스트 실행 
+>>   - [ ] SQL 로그에서 동일 쿼리 반복 호출이 사라졌는지 확인 
+>>   - [ ] 조회 결과가 기존과 동일하게 반환되는지 검증
+>>   - [ ] 개선 전/후 실행 시간 또는 쿼리 수 비교 로그 출력
+>
 
 ---
-
-## 📁 Directory Structure
-<pre><code>
-spring
-├── app
-│   ├── controller
-│   │   ├── api
-│   │   │   ├── auth
-│   │   │   │   └── payload
-│   │   │   │       ├── request
-│   │   │   │       └── response
-│   │   │   ├── event
-│   │   │   │   └── payload
-│   │   │   │       ├── request
-│   │   │   │       └── response
-│   │   │   ├── group
-│   │   │   │   └── payload
-│   │   │   │       ├── request
-│   │   │   │       └── response
-│   │   │   ├── mainpage
-│   │   │   │   └── payload
-│   │   │   │       ├── request
-│   │   │   │       └── response
-│   │   │   ├── member
-│   │   │   │   └── payload
-│   │   │   ├── mypage
-│   │   │   │   └── payload
-│   │   │   │       ├── request
-│   │   │   │       └── response
-│   │   │   └── schedule
-│   │   │       └── payload
-│   │   │           ├── request
-│   │   │           └── response
-│   ├── model
-│   │   ├── auth
-│   │   │   ├── code
-│   │   │   ├── domain
-│   │   │   ├── dto
-│   │   │   └── token
-│   │   │       └── entity
-│   │   ├── event
-│   │   │   ├── code
-│   │   │   ├── dto
-│   │   │   ├── entity
-│   │   │   ├── factory
-│   │   │   ├── repository
-│   │   │   ├── service
-│   │   │   └── strategy
-│   │   ├── group
-│   │   │   ├── code
-│   │   │   ├── dto
-│   │   │   ├── entity
-│   │   │   ├── repository
-│   │   │   └── service
-│   │   ├── mainpage
-│   │   │   ├── code
-│   │   │   ├── dto
-│   │   │   ├── entity
-│   │   │   ├── repository
-│   │   │   └── service
-│   │   ├── member
-│   │   │   ├── code
-│   │   │   ├── dto
-│   │   │   ├── entity
-│   │   │   ├── repository
-│   │   │   └── service
-│   │   ├── mypage
-│   │   │   ├── converter
-│   │   │   ├── dto
-│   │   │   ├── entity
-│   │   │   ├── repository
-│   │   │   └── service
-│   │   └── schedule
-│   │       ├── code
-│   │       ├── dto
-│   │       ├── entity
-│   │       ├── repository
-│   │       └── service
-└── infra
-    ├── auth
-    │   ├── jwt
-    │   │   ├── dto
-    │   │   └── filter
-    │   └── oauth2
-    │       └── user
-    ├── config
-    │   └── security
-    ├── entity
-    ├── error
-    │   ├── eventAdvice
-    │   ├── exceptions
-    │   │   ├── event
-    │   │   ├── group
-    │   │   ├── member
-    │   │   ├── mypage
-    │   │   └── schedule
-    │   ├── groupAdvice
-    │   ├── memberAdvice
-    │   ├── mypageAdvice
-    │   └── scheduleAdvice
-    ├── response
-    └── utils
-        .
-        .
-        .
-</code></pre>
-
-## 🧾 코드 컨벤션
-
-커밋 메시지는 다음 규칙에 맞춰 작성합니다
-
-> 📌 예시: **`✨ feat: sign up complete`**
-
----
-
-| 태그                | 설명                                      |
-|-------------------|-----------------------------------------|
-| ✨ **feat**        | 새로운 기능 추가                               |
-| 🐛 **fix**        | 버그 수정                                   |
-| 📝 **docs**       | 문서 수정 (README 등)                        |
-| 💄 **style**      | 코드 포맷팅, 세미콜론 누락, 코드 변경 없음               |
-| ♻️ **refactor**   | 코드 리팩토링 (기능 변화 없이 구조 개선)                |
-| ✅ **test**        | 테스트 코드 추가, 기존 테스트 리팩토링                  |
-| 🔧 **chore**      | 빌드 설정 변경, 패키지 매니저 설정 등                  |
-| 🔀 **merge**      | 브랜치 병합 (예: `merge: main` → main과 병합했음) |
-| 📍 **checkpoint** | 진행중(체크포인트)                              |
-| 🎨 **design**     | 뷰 디자인 변경                                |
+### 커밋 메시지 컨벤션 정리
+| 타입    | 설명 |
+|-------|------|
+| feat  | 새로운 기능 추가 |
+| fix   | 버그 수정 |
+| docs  | 문서 수정 |
+| style | 코드 스타일 수정 (로직 변경 없음) |
+| refactor | 리팩터링 (동작 변화 없이 구조 개선) |
+| test  | 테스트 코드 추가/수정 |
+| chore | 빌드, 설정, 유지보수 작업 |
