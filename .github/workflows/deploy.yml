@@ -118,6 +118,8 @@ jobs:
             sed -i '/^REDIS_PORT=/d' .env
             
             # Secret Manager에서 최신 값들을 가져와서 .env에 추가
+            rm -f .env
+            touch .env
             echo "" >> .env
             echo "DB_URL=$(gcloud secrets versions access latest --secret='db-url')" >> .env
             echo "JWT_SECRET=$(gcloud secrets versions access latest --secret='jwt-secret')" >> .env
