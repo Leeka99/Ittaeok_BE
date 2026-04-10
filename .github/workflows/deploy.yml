@@ -139,6 +139,13 @@ jobs:
             echo "REDIS_HOST=$(gcloud secrets versions access latest --secret='redis-host')" >> .env
             echo "REDIS_PORT=$(gcloud secrets versions access latest --secret='redis-port')" >> .env
             
+            # GITHUB secrets 추가
+            echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+            echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
+            echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
+            echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+            echo "DOCKER_IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest" >> .env
+            
             echo "Updated Secret Manager Values"
             
             echo "Stopping existing containers..."
