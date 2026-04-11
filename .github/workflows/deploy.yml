@@ -170,11 +170,15 @@ jobs:
             echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
             echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
             echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
-            echo "DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }}" >> .env
-            echo "DOCKER_PASSWORD=${{ secrets.DOCKER_PASSWORD }}" >> .env
             echo "DOCKER_IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest" >> .env
             
             echo "Updated Secret Manager Values"
+            
+            # Docker Hub 로그인
+            echo "Logging in to Docker Hub..."
+            echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login \
+            -u "${{ secrets.DOCKER_USERNAME }}" \
+            --password-stdin
             
             # 기존 컨테이너 제거
             echo "Stopping existing containers..."
