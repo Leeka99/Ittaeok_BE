@@ -22,7 +22,7 @@
 .\scripts\codex-deploy-github.ps1 -Message "chore: Codex GitHub 배포 자동화 환경 구성"
 ```
 
-## 배포 PR 생성
+## 배포 PR 생성 및 병합
 
 ```powershell
 .\scripts\codex-deploy-github.ps1 -Message "fix: 배포 오류 수정" -CreatePr
@@ -30,7 +30,7 @@
 
 백엔드 GitHub Actions 워크플로는 PR이 `dev` 브랜치에 병합된 뒤에만 GCP 배포를 실행합니다.
 
-GitHub CLI 인증이 되어 있고 즉시 병합하려는 경우 Codex는 다음 명령을 실행할 수 있습니다.
+즉시 병합하려는 경우 Codex는 Git Credential Manager에 저장된 GitHub 인증을 사용해 REST API로 PR을 병합할 수 있습니다.
 
 ```powershell
 .\scripts\codex-deploy-github.ps1 -Message "fix: 배포 오류 수정" -CreatePr -MergePr
