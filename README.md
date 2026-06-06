@@ -213,3 +213,6 @@ spring
 | 🔀 **merge**      | 브랜치 병합 (예: `merge: main` → main과 병합했음) |
 | 📍 **checkpoint** | 진행중(체크포인트)                              |
 | 🎨 **design**     | 뷰 디자인 변경                                |
+배포
+---
+test
