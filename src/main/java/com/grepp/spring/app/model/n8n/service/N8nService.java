@@ -4,6 +4,7 @@ import com.grepp.spring.app.model.n8n.dto.ScheduleConfirmedRequest;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -14,7 +15,12 @@ public class N8nService {
     public N8nService(
         RestClient.Builder restClientBuilder,
         @Value("${n8n.webhook.schedule-confirmed}") String webhookUrl
+
     ) {
+        SimpleClientHttpRequestFactory factory = new SimpleClientHttpRequestFactory();
+
+        factory.setConnectTimeout(5_000);
+        factory.setReadTimeout(10_000);
         this.restClient = restClientBuilder.build();
         this.webhookUrl = webhookUrl;
     }
