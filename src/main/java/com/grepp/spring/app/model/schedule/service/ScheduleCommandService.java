@@ -180,12 +180,15 @@ public class ScheduleCommandService {
             Schedule schedule = getSchedule(scheduleId)
                 .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
 
+            log.info("n8n 호출 시작");
+
             n8nService.sendScheduleConfirmed(
                 schedule.getId(),
                 schedule.getScheduleName(),
                 schedule.getStartTime(),
                 schedule.getEndTime()
             );
+            log.info("n8n 호출 완료");
         }
 
     }
