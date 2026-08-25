@@ -21,7 +21,7 @@ public class N8nService {
 
         factory.setConnectTimeout(5_000);
         factory.setReadTimeout(10_000);
-        this.restClient = restClientBuilder.build();
+        this.restClient = restClientBuilder.requestFactory(factory).build();
         this.webhookUrl = webhookUrl;
     }
 
