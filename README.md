@@ -72,7 +72,7 @@
 ## 📍 System Architecture
 
 <div align="center">
-<img width="1374" height="765" alt="system Architecture" src="https://github.com/user-attachments/assets/450608c2-bd68-4d37-9bc7-ba88f3dc28ea" />
+<img width="1374" height="765" alt="system Architecture" src="docs/images/ittaeOKimg.png" />
 </div>
 <br/>
 
@@ -80,7 +80,7 @@
 
 ## 📊 ERD
 <div align="center">
-<img width="2592" height="1831" alt="ERD" src="https://github.com/user-attachments/assets/5c0df536-3a13-4c11-af2c-c8a748e14fa7" />
+<img width="2592" height="1831" alt="ERD" src="https://github.com/user-attachments/assets/5c0df536-3a13-4c11-af2c-c8a748e14fa7"/>
 
 </div>
 <br/>
