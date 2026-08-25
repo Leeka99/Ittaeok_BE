@@ -9,8 +9,10 @@ import com.grepp.spring.app.controller.api.schedule.payload.response.CreateSched
 import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.member.entity.Member;
 import com.grepp.spring.app.model.member.repository.MemberRepository;
+import com.grepp.spring.app.model.n8n.service.N8nService;
 import com.grepp.spring.app.model.schedule.code.MeetingPlatform;
 import com.grepp.spring.app.model.schedule.code.ScheduleRole;
+import com.grepp.spring.app.model.schedule.code.ScheduleStatus;
 import com.grepp.spring.app.model.schedule.code.VoteStatus;
 import com.grepp.spring.app.model.schedule.dto.*;
 import com.grepp.spring.app.model.schedule.entity.*;
@@ -80,6 +82,9 @@ public class ScheduleCommandService {
 
     @Autowired
     private ZoomOAuthService zoomOAuthService;
+
+    @Autowired
+    private final N8nService n8nService;
 
     // 공통 로직
     private Optional<Schedule> getSchedule(Long scheduleId) {
@@ -170,6 +175,18 @@ public class ScheduleCommandService {
         modifyScheduleEntity(scheduleId, dto);
 
         modifyWorkspaceEntity(scheduleId, dto, request.getWorkspaceId());
+
+        if (dto.getStatus() == ScheduleStatus.FIXED) {
+            Schedule schedule = getSchedule(scheduleId)
+                .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
+
+            n8nService.sendScheduleConfirmed(
+                schedule.getId(),
+                schedule.getScheduleName(),
+                schedule.getStartTime(),
+                schedule.getEndTime()
+            );
+        }
 
     }
 
