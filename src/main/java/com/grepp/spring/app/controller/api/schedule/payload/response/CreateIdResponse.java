@@ -11,6 +11,6 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateSchedulesResponse {
-    private Long scheduleId;
+public class CreateIdResponse {
+    private Long id;
 }

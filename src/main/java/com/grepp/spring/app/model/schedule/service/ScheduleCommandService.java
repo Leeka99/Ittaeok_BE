@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grepp.spring.app.controller.api.schedule.payload.request.*;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateOnlineMeetingRoomResponse;
-import com.grepp.spring.app.controller.api.schedule.payload.response.CreateSchedulesResponse;
+import com.grepp.spring.app.controller.api.schedule.payload.response.CreateIdResponse;
 import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.member.entity.Member;
 import com.grepp.spring.app.model.member.repository.MemberRepository;
@@ -115,7 +115,7 @@ public class ScheduleCommandService {
     }
 
     @Transactional
-    public CreateSchedulesResponse createSchedule(CreateSchedulesRequest request, String userId) {
+    public CreateIdResponse createSchedule(CreateSchedulesRequest request, String userId) {
 
         Event event = scheduleQueryService.findEventById(request.getEventId());
 
@@ -269,10 +269,12 @@ public class ScheduleCommandService {
         scheduleCommandRepository.deleteById(scheduleId);
     }
 
-    public void AddWorkspace(Schedule schedule, AddWorkspaceRequest request) {
+    public CreateIdResponse AddWorkspace(Schedule schedule, AddWorkspaceRequest request) {
         AddWorkspaceDto dto = AddWorkspaceDto.toDto(schedule, request);
         Workspace workspace = AddWorkspaceDto.fromDto(dto);
         workspaceCommandRepository.save(workspace);
+
+        return CreateScheduleDto.toResponse(workspace.getId());
     }
 
     public void deleteWorkspace(Long workspaceId) {
