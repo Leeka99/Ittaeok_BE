@@ -1,7 +1,7 @@
 package com.grepp.spring.app.model.schedule.dto;
 
 import com.grepp.spring.app.controller.api.schedule.payload.request.CreateSchedulesRequest;
-import com.grepp.spring.app.controller.api.schedule.payload.response.CreateSchedulesResponse;
+import com.grepp.spring.app.controller.api.schedule.payload.response.CreateIdResponse;
 import com.grepp.spring.app.model.event.code.MeetingType;
 import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.schedule.code.ScheduleStatus;
@@ -48,9 +48,9 @@ public class CreateScheduleDto {
             .description(dto.getDescription()).build();
     }
 
-    public static CreateSchedulesResponse toResponse(Long scheduleId) {
-        return CreateSchedulesResponse.builder()
-            .scheduleId(scheduleId)
+    public static CreateIdResponse toResponse(Long id) {
+        return CreateIdResponse.builder()
+            .id(id)
             .build();
     }
 }

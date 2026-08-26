@@ -5,12 +5,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grepp.spring.app.controller.api.schedule.payload.request.*;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateOnlineMeetingRoomResponse;
-import com.grepp.spring.app.controller.api.schedule.payload.response.CreateSchedulesResponse;
+import com.grepp.spring.app.controller.api.schedule.payload.response.CreateIdResponse;
 import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.member.entity.Member;
 import com.grepp.spring.app.model.member.repository.MemberRepository;
+import com.grepp.spring.app.model.n8n.service.N8nService;
 import com.grepp.spring.app.model.schedule.code.MeetingPlatform;
 import com.grepp.spring.app.model.schedule.code.ScheduleRole;
+import com.grepp.spring.app.model.schedule.code.ScheduleStatus;
 import com.grepp.spring.app.model.schedule.code.VoteStatus;
 import com.grepp.spring.app.model.schedule.dto.*;
 import com.grepp.spring.app.model.schedule.entity.*;
@@ -81,6 +83,9 @@ public class ScheduleCommandService {
     @Autowired
     private ZoomOAuthService zoomOAuthService;
 
+    @Autowired
+    private final N8nService n8nService;
+
     // 공통 로직
     private Optional<Schedule> getSchedule(Long scheduleId) {
         Optional<Schedule> schedule = scheduleQueryRepository.findById(scheduleId);
@@ -110,7 +115,7 @@ public class ScheduleCommandService {
     }
 
     @Transactional
-    public CreateSchedulesResponse createSchedule(CreateSchedulesRequest request, String userId) {
+    public CreateIdResponse createSchedule(CreateSchedulesRequest request, String userId) {
 
         Event event = scheduleQueryService.findEventById(request.getEventId());
 
@@ -170,6 +175,21 @@ public class ScheduleCommandService {
         modifyScheduleEntity(scheduleId, dto);
 
         modifyWorkspaceEntity(scheduleId, dto, request.getWorkspaceId());
+
+        if (dto.getStatus() == ScheduleStatus.FIXED) {
+            Schedule schedule = getSchedule(scheduleId)
+                .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
+
+            log.info("n8n 호출 시작");
+
+            n8nService.sendScheduleConfirmed(
+                schedule.getId(),
+                schedule.getScheduleName(),
+                schedule.getStartTime(),
+                schedule.getEndTime()
+            );
+            log.info("n8n 호출 완료");
+        }
 
     }
 
@@ -249,10 +269,12 @@ public class ScheduleCommandService {
         scheduleCommandRepository.deleteById(scheduleId);
     }
 
-    public void AddWorkspace(Schedule schedule, AddWorkspaceRequest request) {
+    public CreateIdResponse AddWorkspace(Schedule schedule, AddWorkspaceRequest request) {
         AddWorkspaceDto dto = AddWorkspaceDto.toDto(schedule, request);
         Workspace workspace = AddWorkspaceDto.fromDto(dto);
         workspaceCommandRepository.save(workspace);
+
+        return CreateScheduleDto.toResponse(workspace.getId());
     }
 
     public void deleteWorkspace(Long workspaceId) {

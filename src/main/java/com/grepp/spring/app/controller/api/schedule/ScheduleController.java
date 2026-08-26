@@ -9,7 +9,7 @@ import com.grepp.spring.app.controller.api.schedule.payload.request.VoteMiddleLo
 import com.grepp.spring.app.controller.api.schedule.payload.request.WriteSuggestedLocationRequest;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateDepartLocationResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateOnlineMeetingRoomResponse;
-import com.grepp.spring.app.controller.api.schedule.payload.response.CreateSchedulesResponse;
+import com.grepp.spring.app.controller.api.schedule.payload.response.CreateIdResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateWorkspaceResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.DeleteSchedulesResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.DeleteWorkSpaceResponse;
@@ -17,7 +17,6 @@ import com.grepp.spring.app.controller.api.schedule.payload.response.ShowSchedul
 import com.grepp.spring.app.controller.api.schedule.payload.response.ShowSuggestedLocationsResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.ShowVoteMembersResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.VoteMiddleLocationsResponse;
-import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.schedule.entity.Location;
 import com.grepp.spring.app.model.schedule.entity.Schedule;
 import com.grepp.spring.app.model.schedule.entity.ScheduleMember;
@@ -70,10 +69,10 @@ public class ScheduleController {
     // 일정 등록
     @Operation(summary = "일정 등록", description = "일정 등록을 진행합니다.")
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<CreateSchedulesResponse>> createSchedules(
+    public ResponseEntity<ApiResponse<CreateIdResponse>> createSchedules(
         @RequestBody @Valid CreateSchedulesRequest request, @CurrentUser String userId) {
 
-        CreateSchedulesResponse response = scheduleCommandService.createSchedule(request, userId);
+        CreateIdResponse response = scheduleCommandService.createSchedule(request, userId);
 
         return ResponseEntity.ok(ApiResponse.success(response));
     }
@@ -188,13 +187,13 @@ public class ScheduleController {
     // 공통 워크스페이스 등록
     @Operation(summary = "워크스페이스 등록", description = "워크스페이스 등록을 진행합니다.")
     @PostMapping("/add-workspace/{scheduleId}")
-    public ResponseEntity<ApiResponse<CreateWorkspaceResponse>> createWorkspace(
+    public ResponseEntity<ApiResponse<CreateIdResponse>> createWorkspace(
         @PathVariable Long scheduleId, @RequestBody AddWorkspaceRequest request) {
 
         Schedule schedule = validSchedule(scheduleId);
-        scheduleCommandService.AddWorkspace(schedule, request);
+        CreateIdResponse response = scheduleCommandService.AddWorkspace(schedule, request);
 
-        return ResponseEntity.ok(ApiResponse.success("워크스페이스를 등록했습니다."));
+        return ResponseEntity.ok(ApiResponse.success(response));
     }
 
     // 공통 워크스페이스 삭제
