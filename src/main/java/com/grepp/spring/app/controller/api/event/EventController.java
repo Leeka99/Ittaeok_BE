@@ -4,6 +4,7 @@ import com.grepp.spring.app.controller.api.event.payload.request.CreateEventRequ
 import com.grepp.spring.app.controller.api.event.payload.request.MyTimeScheduleRequest;
 import com.grepp.spring.app.controller.api.event.payload.response.AllTimeScheduleResponse;
 import com.grepp.spring.app.controller.api.event.payload.response.CreateEventResponse;
+import com.grepp.spring.app.controller.api.event.payload.response.DeleteEventResponse;
 import com.grepp.spring.app.controller.api.event.payload.response.ScheduleResultResponse;
 import com.grepp.spring.app.controller.api.event.payload.response.ShowEventResponse;
 import com.grepp.spring.app.model.event.service.EventCommandService;
@@ -115,6 +116,19 @@ public class EventController {
     ) {
         ScheduleResultResponse response = eventQueryService.getScheduleResult(eventId, currentMemberId);
         return ResponseEntity.ok(ApiResponse.success(response));
+    }
+
+    // 이벤트 삭제
+    @Operation(summary = "이벤트 삭제")
+    @DeleteMapping("/delete/{eventId}")
+    public ResponseEntity<ApiResponse<DeleteEventResponse>> deleteEvent(
+        @PathVariable Long eventId,
+        @CurrentUser String currentMemberId
+    ) {
+
+        eventCommandService.deleteEvent(eventId);
+
+        return ResponseEntity.ok(ApiResponse.success("이벤트를 삭제했습니다."));
     }
 
 }

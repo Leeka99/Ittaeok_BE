@@ -3,6 +3,7 @@ package com.grepp.spring.app.model.event.service;
 import com.grepp.spring.app.controller.api.event.payload.request.CreateEventRequest;
 import com.grepp.spring.app.controller.api.event.payload.request.MyTimeScheduleRequest;
 import com.grepp.spring.app.controller.api.event.payload.response.CreateEventResponse;
+import com.grepp.spring.app.controller.api.event.payload.response.DeleteEventResponse;
 import com.grepp.spring.app.model.event.code.Role;
 import com.grepp.spring.app.model.event.dto.CreateEventDto;
 import com.grepp.spring.app.model.event.dto.EventMemberDto;
@@ -13,6 +14,7 @@ import com.grepp.spring.app.model.event.entity.EventMember;
 import com.grepp.spring.app.model.event.entity.TempSchedule;
 import com.grepp.spring.app.model.event.factory.EventCreationStrategyFactory;
 import com.grepp.spring.app.model.event.repository.EventMemberRepository;
+import com.grepp.spring.app.model.event.repository.EventQueryRepository;
 import com.grepp.spring.app.model.event.repository.EventRepository;
 import com.grepp.spring.app.model.event.repository.TempScheduleRepository;
 import com.grepp.spring.app.model.event.strategy.EventCreationStrategy;
@@ -47,6 +49,7 @@ public class EventCommandService {
     private final EventScheduleResultService eventScheduleResultService;
     private final EventCreationStrategyFactory strategyFactory;
     private final EventScheduleCacheService cacheService;
+    private final EventQueryRepository eventQueryRepository;
 
     public CreateEventResponse createEvent(CreateEventRequest webRequest, String currentMemberId) {
         CreateEventDto serviceRequest = CreateEventDto.toDto(webRequest, currentMemberId);
@@ -213,4 +216,7 @@ public class EventCommandService {
         }
     }
 
+    public void deleteEvent(Long eventId) {
+        eventQueryRepository.deleteById(eventId);
+    }
 }
