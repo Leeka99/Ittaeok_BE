@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grepp.spring.app.controller.api.schedule.payload.request.*;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateOnlineMeetingRoomResponse;
 import com.grepp.spring.app.controller.api.schedule.payload.response.CreateIdResponse;
+import com.grepp.spring.app.model.automation.service.AutomationTaskService;
 import com.grepp.spring.app.model.event.entity.Event;
 import com.grepp.spring.app.model.member.entity.Member;
 import com.grepp.spring.app.model.member.repository.MemberRepository;
@@ -80,11 +81,11 @@ public class ScheduleCommandService {
     @Value("${kakao.middle-location.api-key}")
     private String kakaoMiddleLocationApiKey;
 
-    @Autowired
-    private ZoomOAuthService zoomOAuthService;
+    private final ZoomOAuthService zoomOAuthService;
 
-    @Autowired
     private final N8nService n8nService;
+
+    private final AutomationTaskService automationTaskService;
 
     // 공통 로직
     private Optional<Schedule> getSchedule(Long scheduleId) {
@@ -182,7 +183,7 @@ public class ScheduleCommandService {
 
             log.info("n8n 호출 시작");
 
-            n8nService.sendScheduleConfirmed(
+            automationTaskService.submit(
                 schedule.getId(),
                 schedule.getScheduleName(),
                 schedule.getStartTime(),
