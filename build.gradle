@@ -83,6 +83,10 @@ dependencies {
 
     // mysql
     implementation('com.mysql:mysql-connector-j')
+
+    //Bucket4j
+    implementation 'com.bucket4j:bucket4j_jdk17-core:8.19.0'
+
 }
 
 tasks.withType(Test) {

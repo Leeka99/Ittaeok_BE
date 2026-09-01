@@ -53,7 +53,6 @@ public class ScheduleCommandService {
 
     private final ScheduleQueryService scheduleQueryService;
 
-
     private final ScheduleQueryRepository scheduleQueryRepository;
     private final ScheduleCommandRepository scheduleCommandRepository;
 
