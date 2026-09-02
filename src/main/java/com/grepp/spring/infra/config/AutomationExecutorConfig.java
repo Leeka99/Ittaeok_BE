@@ -18,7 +18,7 @@ public class AutomationExecutorConfig {
         executor.setMaxPoolSize(1);
 
         // Worker가 처리하지 못한 작업이 기다리는 Queue 크기
-        executor.setQueueCapacity(100);
+        executor.setQueueCapacity(2);
 
         // 로그에서 Worker 확인용
         executor.setThreadNamePrefix("ittaeOk-automation-worker-");
