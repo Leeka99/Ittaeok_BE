@@ -1,17 +1,22 @@
 package com.grepp.spring.app.model.automation.service;
 
+import com.grepp.spring.app.model.automation.code.AutomationFailureRequest;
 import com.grepp.spring.app.model.automation.entity.AutomationJob;
 import com.grepp.spring.app.model.automation.repository.AutomationJobRepository;
 import com.grepp.spring.app.model.n8n.service.N8nService;
+import com.grepp.spring.app.model.schedule.entity.Schedule;
+import com.grepp.spring.app.model.schedule.repository.ScheduleQueryRepository;
 import io.github.bucket4j.Bucket;
 import java.time.LocalDateTime;
-import java.util.concurrent.RejectedExecutionException;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.TaskRejectedException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -27,6 +32,8 @@ public class AutomationTaskService {
     private final N8nService n8nService;
 
     private final AutomationJobRepository automationJobRepository;
+
+    private final ScheduleQueryRepository scheduleQueryRepository;
 
     public void submit(
         Long scheduleId,
@@ -187,4 +194,60 @@ public class AutomationTaskService {
             );
         }
     }
+    @Transactional
+    public void handleFailure(AutomationFailureRequest request) {
+
+        Long scheduleId = request.getScheduleId();
+
+        List<AutomationJob> jobs = automationJobRepository
+            .findRecentScheduleJobs(scheduleId, PageRequest.of(0, 1));
+
+        AutomationJob job = jobs.stream().findFirst()
+            .orElseGet(() -> createAutomationJob(scheduleId, request.getMessage()));
+
+        if ("ZOOM_DAILY_LIMIT".equals(request.getErrorType())) {
+
+            job.retryNextDay(request.getMessage());
+
+            log.warn(
+                "[Zoom 일일 한도 초과] scheduleId={}, nextRetryAt={}",
+                scheduleId,
+                job.getNextRetryAt()
+            );
+
+        } else {
+
+            job.failed(request.getMessage());
+
+            log.error(
+                "[자동화 최종 실패] scheduleId={}, errorType={}, message={}",
+                scheduleId,
+                request.getErrorType(),
+                request.getMessage()
+            );
+        }
+    }
+
+    private AutomationJob createAutomationJob(
+        Long scheduleId,
+        String error
+    ) {
+        Schedule schedule = scheduleQueryRepository.findById(scheduleId)
+            .orElseThrow(() ->
+                new IllegalArgumentException(
+                    "Schedule을 찾을 수 없습니다. scheduleId=" + scheduleId
+                )
+            );
+
+        AutomationJob job = new AutomationJob(
+            schedule.getId(),
+            schedule.getScheduleName(),
+            schedule.getStartTime(),
+            schedule.getEndTime(),
+            error
+        );
+
+        return automationJobRepository.save(job);
+    }
+
 }

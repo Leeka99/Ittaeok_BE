@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -74,6 +75,15 @@ public class AutomationJob {
 
     public void failed(String error) {
         this.status = AutomationJobStatus.FAILED;
+        this.lastError = error;
+    }
+
+    public void retryNextDay(String error) {
+        this.status = AutomationJobStatus.RETRY_WAIT;
+        this.retryCount++;
+        this.nextRetryAt = LocalDate.now()
+            .plusDays(1)
+            .atTime(9,0);
         this.lastError = error;
     }
 }

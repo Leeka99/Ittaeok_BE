@@ -5,6 +5,7 @@ import com.grepp.spring.app.model.automation.entity.AutomationJob;
 import io.lettuce.core.dynamic.annotation.Param;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,6 +21,17 @@ public interface AutomationJobRepository  extends JpaRepository<AutomationJob, L
     List<AutomationJob> findRetryableJobs(
         @Param("status") AutomationJobStatus status,
         @Param("now") LocalDateTime now,
+        Pageable pageable
+    );
+
+    @Query("""
+    SELECT j
+    FROM AutomationJob j
+    WHERE j.scheduleId = :scheduleId
+    ORDER BY j.id DESC
+""")
+    List<AutomationJob> findRecentScheduleJobs(
+        @Param("scheduleId") Long scheduleId,
         Pageable pageable
     );
 }
