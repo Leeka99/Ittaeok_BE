@@ -17,17 +17,21 @@ import com.grepp.spring.app.model.schedule.code.ScheduleStatus;
 import com.grepp.spring.app.model.schedule.code.VoteStatus;
 import com.grepp.spring.app.model.schedule.dto.*;
 import com.grepp.spring.app.model.schedule.entity.*;
+import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
 import com.grepp.spring.app.model.schedule.repository.*;
 import com.grepp.spring.infra.error.exceptions.NotFoundException;
 import com.grepp.spring.infra.error.exceptions.group.UserNotFoundException;
 import com.grepp.spring.infra.error.exceptions.schedule.EventNotActivatedException;
 import com.grepp.spring.infra.error.exceptions.schedule.LocationNotFoundException;
 import com.grepp.spring.infra.error.exceptions.schedule.VoteAlreadyProgressException;
+import com.grepp.spring.infra.kafka.producer.ScheduleEventProducer;
 import com.grepp.spring.infra.response.GroupErrorCode;
 import com.grepp.spring.infra.response.ScheduleErrorCode;
 import com.grepp.spring.infra.utils.RandomPicker;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +89,8 @@ public class ScheduleCommandService {
     private final N8nService n8nService;
 
     private final AutomationTaskService automationTaskService;
+
+    private final ScheduleEventProducer scheduleEventProducer;
 
     // 공통 로직
     private Optional<Schedule> getSchedule(Long scheduleId) {
@@ -179,6 +185,18 @@ public class ScheduleCommandService {
         if (dto.getStatus() == ScheduleStatus.FIXED) {
             Schedule schedule = getSchedule(scheduleId)
                 .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
+
+            log.info("ScheduleFixedEvent 생성");
+            ScheduleFixedEvent event = new ScheduleFixedEvent(
+                UUID.randomUUID().toString(),
+                schedule.getId(),
+                schedule.getScheduleName(),
+                schedule.getStartTime(),
+                schedule.getEndTime(),
+                LocalDateTime.now()
+            );
+            scheduleEventProducer.publishScheduleFixed(event);
+            log.info("ScheduleFixedEvent 생성 완료");
 
             log.info("n8n 호출 시작");
 
