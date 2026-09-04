@@ -200,12 +200,12 @@ public class ScheduleCommandService {
 
             log.info("n8n 호출 시작");
 
-            automationTaskService.submit(
-                schedule.getId(),
-                schedule.getScheduleName(),
-                schedule.getStartTime(),
-                schedule.getEndTime()
-            );
+//            automationTaskService.submit(
+//                schedule.getId(),
+//                schedule.getScheduleName(),
+//                schedule.getStartTime(),
+//                schedule.getEndTime()
+//            );
             log.info("n8n 호출 완료");
         }
 
