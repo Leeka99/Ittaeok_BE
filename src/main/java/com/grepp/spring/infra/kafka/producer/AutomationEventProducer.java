@@ -1,0 +1,46 @@
+package com.grepp.spring.infra.kafka.producer;
+
+import com.grepp.spring.app.model.schedule.event.AutomationCompletedEvent;
+import com.grepp.spring.app.model.schedule.event.AutomationDeferredEvent;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class AutomationEventProducer {
+
+    private static final String TOPIC = "automation-events";
+
+    private final KafkaTemplate<String, Object> kafkaTemplate;
+
+    public void publishCompleted(AutomationCompletedEvent event) {
+        kafkaTemplate.send(
+            TOPIC,
+            event.scheduleId().toString(),
+            event
+        );
+
+        log.info(
+            "[자동화 완료 이벤트 발행] eventId={}, scheduleId={}",
+            event.eventId(),
+            event.scheduleId()
+        );
+    }
+
+    public void publishDeferred(AutomationDeferredEvent event) {
+        kafkaTemplate.send(
+            TOPIC,
+            event.scheduleId().toString(),
+            event
+        );
+
+        log.info(
+            "[자동화 연기 이벤트 발행] eventId={}, scheduleId={}",
+            event.eventId(),
+            event.scheduleId()
+        );
+    }
+}

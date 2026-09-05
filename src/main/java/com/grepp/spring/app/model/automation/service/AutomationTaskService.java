@@ -5,10 +5,13 @@ import com.grepp.spring.app.model.automation.entity.AutomationJob;
 import com.grepp.spring.app.model.automation.repository.AutomationJobRepository;
 import com.grepp.spring.app.model.n8n.service.N8nService;
 import com.grepp.spring.app.model.schedule.entity.Schedule;
+import com.grepp.spring.app.model.schedule.event.AutomationDeferredEvent;
 import com.grepp.spring.app.model.schedule.repository.ScheduleQueryRepository;
+import com.grepp.spring.infra.kafka.producer.AutomationEventProducer;
 import io.github.bucket4j.Bucket;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -34,6 +37,8 @@ public class AutomationTaskService {
     private final AutomationJobRepository automationJobRepository;
 
     private final ScheduleQueryRepository scheduleQueryRepository;
+
+    private final AutomationEventProducer automationEventProducer;
 
     public void submit(
         Long scheduleId,
@@ -208,6 +213,17 @@ public class AutomationTaskService {
         if ("ZOOM_DAILY_LIMIT".equals(request.getErrorType())) {
 
             job.retryNextDay(request.getMessage());
+
+            AutomationDeferredEvent event =
+                new AutomationDeferredEvent(
+                    UUID.randomUUID().toString(),
+                    scheduleId,
+                    request.getMessage(),
+                    job.getNextRetryAt(),
+                    LocalDateTime.now()
+                );
+
+            automationEventProducer.publishDeferred(event);
 
             log.warn(
                 "[Zoom 일일 한도 초과] scheduleId={}, nextRetryAt={}",
