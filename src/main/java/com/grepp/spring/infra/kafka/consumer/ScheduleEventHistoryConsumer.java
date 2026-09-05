@@ -3,7 +3,7 @@ package com.grepp.spring.infra.kafka.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grepp.spring.app.model.schedule.entity.EventHistory;
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import com.grepp.spring.app.model.schedule.repository.EventHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +18,10 @@ public class ScheduleEventHistoryConsumer {
     private final ObjectMapper objectMapper;
 
     @KafkaListener(
-        topics = "schedule-fixed-events",
-        groupId = "audit-group"
+        topics = "schedule-confirmed-events",
+        groupId = "history-group"
     )
-    public void consume(ScheduleFixedEvent event) {
+    public void consume(ScheduleConfirmedEvent event) {
 
         try {
             String payload = objectMapper.writeValueAsString(event);
@@ -44,7 +44,7 @@ public class ScheduleEventHistoryConsumer {
 
         } catch (JsonProcessingException e) {
             log.error(
-                "[Kafka Audit payload 변환 실패] eventId={}",
+                "[Kafka 일정 확정 이력 payload 변환 실패] eventId={}",
                 event.eventId(),
                 e
             );

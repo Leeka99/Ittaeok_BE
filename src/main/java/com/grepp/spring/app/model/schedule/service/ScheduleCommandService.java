@@ -17,7 +17,7 @@ import com.grepp.spring.app.model.schedule.code.ScheduleStatus;
 import com.grepp.spring.app.model.schedule.code.VoteStatus;
 import com.grepp.spring.app.model.schedule.dto.*;
 import com.grepp.spring.app.model.schedule.entity.*;
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import com.grepp.spring.app.model.schedule.repository.*;
 import com.grepp.spring.infra.error.exceptions.NotFoundException;
 import com.grepp.spring.infra.error.exceptions.group.UserNotFoundException;
@@ -34,7 +34,6 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -187,7 +186,7 @@ public class ScheduleCommandService {
                 .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
 
             log.info("ScheduleFixedEvent 생성");
-            ScheduleFixedEvent event = new ScheduleFixedEvent(
+            ScheduleConfirmedEvent event = new ScheduleConfirmedEvent(
                 UUID.randomUUID().toString(),
                 schedule.getId(),
                 schedule.getScheduleName(),

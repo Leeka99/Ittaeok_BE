@@ -1,7 +1,7 @@
 package com.grepp.spring.infra.kafka.consumer;
 
 import com.grepp.spring.app.model.schedule.entity.Notification;
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import com.grepp.spring.app.model.schedule.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,10 +16,10 @@ public class NotificationConsumer {
     private final NotificationRepository notificationRepository;
 
     @KafkaListener(
-        topics = "schedule-fixed-events",
+        topics = "schedule-confirmed-events",
         groupId = "notification-group"
     )
-    public void consume(ScheduleFixedEvent event) {
+    public void consume(ScheduleConfirmedEvent event) {
 
         String message =
             event.scheduleName() + " 일정이 확정되었습니다.";

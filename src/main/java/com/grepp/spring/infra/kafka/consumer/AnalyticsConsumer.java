@@ -1,6 +1,6 @@
 package com.grepp.spring.infra.kafka.consumer;
 
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AnalyticsConsumer {
     @KafkaListener(
-        topics = "schedule-fixed-events",
+        topics = "schedule-confirmed-events",
         groupId = "analytics-group"
     )
-    public void consume(ScheduleFixedEvent event) {
+    public void consume(ScheduleConfirmedEvent event) {
 
         log.info(
             "[Replay 검증] eventId={}, scheduleId={}, scheduleName={}",

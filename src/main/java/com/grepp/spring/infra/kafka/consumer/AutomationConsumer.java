@@ -1,7 +1,7 @@
 package com.grepp.spring.infra.kafka.consumer;
 
 import com.grepp.spring.app.model.n8n.service.N8nService;
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,10 +17,10 @@ public class AutomationConsumer {
     private final Bucket automationRateLimitBucket;
 
     @KafkaListener(
-        topics = "schedule-fixed-events",
+        topics = "schedule-confirmed-events",
         groupId = "automation-group"
     )
-    public void consume(ScheduleFixedEvent event) {
+    public void consume(ScheduleConfirmedEvent event) {
 
         try {
             automationRateLimitBucket

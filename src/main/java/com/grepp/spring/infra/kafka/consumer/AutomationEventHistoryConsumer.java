@@ -20,7 +20,7 @@ public class AutomationEventHistoryConsumer {
 
     @KafkaListener(
         topics = "automation-deferred-events",
-        groupId = "automation-audit-group"
+        groupId = "automation-history-group"
     )
     public void consume(AutomationDeferredEvent event) {
 

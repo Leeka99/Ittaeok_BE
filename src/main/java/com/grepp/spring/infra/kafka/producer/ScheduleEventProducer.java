@@ -1,6 +1,6 @@
 package com.grepp.spring.infra.kafka.producer;
 
-import com.grepp.spring.app.model.schedule.event.ScheduleFixedEvent;
+import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ScheduleEventProducer {
 
-    private static final String TOPIC = "schedule-fixed-events";
+    private static final String TOPIC = "schedule-confirmed-events";
 
-    private final KafkaTemplate<String, ScheduleFixedEvent> kafkaTemplate;
+    private final KafkaTemplate<String, ScheduleConfirmedEvent> kafkaTemplate;
 
-    public void publishScheduleFixed(ScheduleFixedEvent event) {
+    public void publishScheduleFixed(ScheduleConfirmedEvent event) {
 
         kafkaTemplate.send(
             TOPIC,
