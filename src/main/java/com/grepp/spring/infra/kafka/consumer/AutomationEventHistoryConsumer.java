@@ -3,6 +3,7 @@ package com.grepp.spring.infra.kafka.consumer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.grepp.spring.app.model.schedule.entity.EventHistory;
+import com.grepp.spring.app.model.schedule.event.AutomationCompletedEvent;
 import com.grepp.spring.app.model.schedule.event.AutomationDeferredEvent;
 import com.grepp.spring.app.model.schedule.repository.EventHistoryRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,6 +51,36 @@ public class AutomationEventHistoryConsumer {
                 e
             );
 
+            throw new IllegalStateException(e);
+        }
+    }
+
+    @KafkaListener(
+        topics = "automation-completed-events",
+        groupId = "automation-history-group"
+    )
+    public void consumeCompleted(AutomationCompletedEvent event) {
+
+        try {
+            String payload = objectMapper.writeValueAsString(event);
+
+            EventHistory eventHistory = new EventHistory(
+                event.eventId(),
+                "AUTOMATION_COMPLETED",
+                event.scheduleId(),
+                event.completedAt(),
+                payload
+            );
+
+            eventHistoryRepository.save(eventHistory);
+
+            log.info(
+                "[AutomationCompletedEvent 이력 저장] eventId={}, scheduleId={}",
+                event.eventId(),
+                event.scheduleId()
+            );
+
+        } catch (JsonProcessingException e) {
             throw new IllegalStateException(e);
         }
     }
