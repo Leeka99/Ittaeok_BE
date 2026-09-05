@@ -1,7 +1,7 @@
-package com.grepp.spring.infra.kafka.consumer;
+package com.grepp.spring.infra.automation.kafka.consumer;
 
 import com.grepp.spring.app.model.n8n.service.N8nService;
-import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
+import com.grepp.spring.app.model.automation.event.ScheduleConfirmedEvent;
 import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

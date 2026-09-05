@@ -1,4 +1,4 @@
-package com.grepp.spring.infra.config;
+package com.grepp.spring.infra.automation;
 
 import java.util.concurrent.ThreadPoolExecutor;
 import org.springframework.context.annotation.Bean;

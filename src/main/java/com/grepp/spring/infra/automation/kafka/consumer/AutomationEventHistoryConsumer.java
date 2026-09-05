@@ -1,11 +1,11 @@
-package com.grepp.spring.infra.kafka.consumer;
+package com.grepp.spring.infra.automation.kafka.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.grepp.spring.app.model.schedule.entity.EventHistory;
-import com.grepp.spring.app.model.schedule.event.AutomationCompletedEvent;
-import com.grepp.spring.app.model.schedule.event.AutomationDeferredEvent;
-import com.grepp.spring.app.model.schedule.repository.EventHistoryRepository;
+import com.grepp.spring.app.model.automation.entity.EventHistory;
+import com.grepp.spring.app.model.automation.event.AutomationCompletedEvent;
+import com.grepp.spring.app.model.automation.event.AutomationDeferredEvent;
+import com.grepp.spring.app.model.automation.repository.EventHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

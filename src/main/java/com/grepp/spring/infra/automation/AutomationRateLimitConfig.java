@@ -1,4 +1,4 @@
-package com.grepp.spring.infra.config;
+package com.grepp.spring.infra.automation;
 
 import io.github.bucket4j.Bucket;
 import java.time.Duration;

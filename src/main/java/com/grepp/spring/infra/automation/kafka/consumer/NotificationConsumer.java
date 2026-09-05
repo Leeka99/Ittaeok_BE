@@ -1,8 +1,8 @@
-package com.grepp.spring.infra.kafka.consumer;
+package com.grepp.spring.infra.automation.kafka.consumer;
 
-import com.grepp.spring.app.model.schedule.entity.Notification;
-import com.grepp.spring.app.model.schedule.event.ScheduleConfirmedEvent;
-import com.grepp.spring.app.model.schedule.repository.NotificationRepository;
+import com.grepp.spring.app.model.automation.entity.Notification;
+import com.grepp.spring.app.model.automation.event.ScheduleConfirmedEvent;
+import com.grepp.spring.app.model.automation.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;

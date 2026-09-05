@@ -87,6 +87,9 @@ dependencies {
     //Bucket4j
     implementation 'com.bucket4j:bucket4j_jdk17-core:8.19.0'
 
+    //Kafka
+    implementation 'org.springframework.kafka:spring-kafka'
+
 }
 
 tasks.withType(Test) {

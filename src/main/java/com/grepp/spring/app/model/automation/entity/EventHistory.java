@@ -1,4 +1,4 @@
-package com.grepp.spring.app.model.schedule.entity;
+package com.grepp.spring.app.model.automation.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

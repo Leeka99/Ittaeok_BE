@@ -1,7 +1,7 @@
-package com.grepp.spring.infra.kafka.producer;
+package com.grepp.spring.infra.automation.kafka.producer;
 
-import com.grepp.spring.app.model.schedule.event.AutomationCompletedEvent;
-import com.grepp.spring.app.model.schedule.event.AutomationDeferredEvent;
+import com.grepp.spring.app.model.automation.event.AutomationCompletedEvent;
+import com.grepp.spring.app.model.automation.event.AutomationDeferredEvent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;

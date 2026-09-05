@@ -1,4 +1,4 @@
-package com.grepp.spring.app.model.schedule.event;
+package com.grepp.spring.app.model.automation.event;
 
 import java.time.LocalDateTime;
 
