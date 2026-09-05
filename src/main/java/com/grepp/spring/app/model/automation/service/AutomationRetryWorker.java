@@ -1,10 +1,14 @@
 package com.grepp.spring.app.model.automation.service;
 
 import com.grepp.spring.app.model.automation.code.AutomationJobStatus;
+import com.grepp.spring.app.model.automation.code.AutomationTrigger;
 import com.grepp.spring.app.model.automation.entity.AutomationJob;
+import com.grepp.spring.app.model.automation.event.AutomationRequestedEvent;
 import com.grepp.spring.app.model.automation.repository.AutomationJobRepository;
+import com.grepp.spring.infra.automation.kafka.producer.AutomationEventProducer;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class AutomationRetryWorker {
 
     private final AutomationJobRepository automationJobRepository;
-    private final AutomationTaskService automationTaskService;
+    private final AutomationEventProducer automationEventProducer;
 
     @Scheduled(fixedDelay = 1000)
     public void retry() {
@@ -39,7 +43,21 @@ public class AutomationRetryWorker {
                 job.getRetryCount()
             );
 
-            automationTaskService.retry(job.getId());
+            job.processing();
+            automationJobRepository.save(job);
+
+            AutomationRequestedEvent event =
+                new AutomationRequestedEvent(
+                    UUID.randomUUID().toString(),
+                    job.getScheduleId(),
+                    job.getScheduleName(),
+                    job.getStartTime(),
+                    job.getEndTime(),
+                    AutomationTrigger.RETRY,
+                    LocalDateTime.now()
+                );
+
+            automationEventProducer.publishRequested(event);
         }
     }
 }

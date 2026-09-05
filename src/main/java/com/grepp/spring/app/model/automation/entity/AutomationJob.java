@@ -58,6 +58,7 @@ public class AutomationJob {
 
     public void processing() {
         this.status = AutomationJobStatus.PROCESSING;
+        this.nextRetryAt = null;
     }
 
     public void success() {

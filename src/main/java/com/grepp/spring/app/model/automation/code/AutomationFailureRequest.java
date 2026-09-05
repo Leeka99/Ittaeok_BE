@@ -1,12 +1,5 @@
 package com.grepp.spring.app.model.automation.code;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+public record AutomationFailureRequest(Long scheduleId, String errorType, String message) {
 
-@Getter
-@NoArgsConstructor
-public class AutomationFailureRequest {
-    private Long scheduleId;
-    private String errorType;
-    private String message;
 }

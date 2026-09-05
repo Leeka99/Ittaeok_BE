@@ -1,7 +1,7 @@
 package com.grepp.spring.infra.automation.kafka.consumer;
 
+import com.grepp.spring.app.model.automation.event.AutomationRequestedEvent;
 import com.grepp.spring.app.model.n8n.service.N8nService;
-import com.grepp.spring.app.model.automation.event.ScheduleConfirmedEvent;
 import io.github.bucket4j.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,27 +11,20 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AutomationConsumer {
-
+public class AutomationExecutionConsumer {
     private final N8nService n8nService;
     private final Bucket automationRateLimitBucket;
-
     @KafkaListener(
-        topics = "schedule-confirmed-events",
-        groupId = "automation-group"
+        topics = "automation-requested-events",
+        groupId = "automation-execution-group"
     )
-    public void consume(ScheduleConfirmedEvent event) {
+    public void consume(AutomationRequestedEvent event) {
 
         try {
+
             automationRateLimitBucket
                 .asBlocking()
                 .consume(1);
-
-            log.info(
-                "[Kafka 자동화 처리 시작] eventId={}, scheduleId={}",
-                event.eventId(),
-                event.scheduleId()
-            );
 
             n8nService.sendScheduleConfirmed(
                 event.scheduleId(),
@@ -41,29 +34,21 @@ public class AutomationConsumer {
             );
 
             log.info(
-                "[Kafka 자동화 처리 완료] eventId={}, scheduleId={}",
+                "[자동화 실행 요청 처리] eventId={}, scheduleId={}",
                 event.eventId(),
-                event.scheduleId()
-            );
-
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-
-            log.warn(
-                "[Kafka 자동화 Rate Limit 대기 중 인터럽트] scheduleId={}",
                 event.scheduleId()
             );
 
         } catch (Exception e) {
 
             log.error(
-                "[Kafka 자동화 처리 실패] eventId={}, scheduleId={}",
+                "[자동화 실행 요청 처리 실패] eventId={}, scheduleId={}",
                 event.eventId(),
                 event.scheduleId(),
                 e
             );
 
-            throw e;
+            throw new IllegalStateException(e);
         }
     }
 }
