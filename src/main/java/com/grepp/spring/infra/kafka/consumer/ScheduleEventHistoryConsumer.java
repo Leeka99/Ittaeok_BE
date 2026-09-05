@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class AuditConsumer {
+public class ScheduleEventHistoryConsumer {
     private final EventHistoryRepository eventHistoryRepository;
     private final ObjectMapper objectMapper;
 
