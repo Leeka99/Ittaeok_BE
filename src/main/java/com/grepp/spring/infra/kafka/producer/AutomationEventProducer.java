@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class AutomationEventProducer {
 
-    private static final String TOPIC = "automation-events";
+    private static final String COMPLETE = "automation-completed-events";
+    private static final String DEFERRED = "automation-deferred-events";
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void publishCompleted(AutomationCompletedEvent event) {
         kafkaTemplate.send(
-            TOPIC,
+            COMPLETE,
             event.scheduleId().toString(),
             event
         );
@@ -32,7 +33,7 @@ public class AutomationEventProducer {
 
     public void publishDeferred(AutomationDeferredEvent event) {
         kafkaTemplate.send(
-            TOPIC,
+            DEFERRED,
             event.scheduleId().toString(),
             event
         );
