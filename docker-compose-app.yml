@@ -40,7 +40,7 @@ services:
       start_period: 30s
 
   ittaeok-container:
-    image: ${DOCKER_IMAGES_NAME}
+    image: ${DOCKER_IMAGE_NAME}
     container_name: ittaeok
     restart: always
     depends_on:
@@ -87,6 +87,13 @@ services:
       - FRONT_DOMAIN_A=${FRONT_DOMAIN_A}
       - FRONT_DOMAIN_B=${FRONT_DOMAIN_B}
       - FRONT_CALLBACK=${FRONT_CALLBACK}
+
+      # Kafka
+      - KAFKA_BOOTSTRAP_SERVERS=${KAFKA_BOOTSTRAP_SERVERS}
+
+      # n8n
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
+
     volumes:
       - ./gcp-key.json:/app/gcp-key.json:ro
     networks:

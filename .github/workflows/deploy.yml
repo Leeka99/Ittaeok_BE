@@ -106,23 +106,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # deploy job에서도 repository 파일을 받아야
+      # docker-compose-app.yml을 VM으로 전송할 수 있음
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 최신 docker-compose-app.yml을 VM1으로 복사
+      - name: Copy docker-compose-app.yml to GCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          port: 22
+          source: "docker-compose-app.yml"
+          target: "/home/${{ secrets.GCP_USERNAME }}/project"
+
       - name: Deploy to GCP Instance
-        uses: appleboy/ssh-action@v1.1.0 # Github Actions -> GCP 서버 원격 접속
+        uses: appleboy/ssh-action@v1.1.0
         with:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            # 배포 디렉토리 이동
             cd $HOME/project
-                        
-            echo "Updating .env file with latest Secret Manager values..."
-            
-            # .env 파일 백업
+
+            echo "Updating .env file..."
+
             cp .env .env.backup.$(date +%Y%m%d_%H%M%S)
-            
-            # Secret Manager 관련 라인들 제거
+
+            # 기존 값 제거
             sed -i '/^DB_URL=/d' .env
             sed -i '/^JWT_SECRET=/d' .env
             sed -i '/^GOOGLE_CLIENT_ID=/d' .env
@@ -142,8 +156,13 @@ jobs:
             sed -i '/^FRONT_CALLBACK=/d' .env
             sed -i '/^REDIS_HOST=/d' .env
             sed -i '/^REDIS_PORT=/d' .env
-            
-            # Secret Manager에서 최신 값들을 가져와서 .env에 추가
+
+            # 이번에 추가
+            sed -i '/^KAFKA_BOOTSTRAP_SERVERS=/d' .env
+            sed -i '/^N8N_WEBHOOK_URL=/d' .env
+            sed -i '/^DOCKER_IMAGE_NAME=/d' .env
+
+            # Secret Manager
             echo "" >> .env
             echo "DB_URL=$(gcloud secrets versions access latest --secret='db-url')" >> .env
             echo "JWT_SECRET=$(gcloud secrets versions access latest --secret='jwt-secret')" >> .env
@@ -164,66 +183,55 @@ jobs:
             echo "FRONT_CALLBACK=$(gcloud secrets versions access latest --secret='front-callback')" >> .env
             echo "REDIS_HOST=$(gcloud secrets versions access latest --secret='redis-host')" >> .env
             echo "REDIS_PORT=$(gcloud secrets versions access latest --secret='redis-port')" >> .env
-            
-            # GITHUB secrets 추가
+
+            # 기존 GitHub Secrets
             echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
             echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> .env
             echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> .env
             echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
+
+            # VM2 연결 정보
+            echo "KAFKA_BOOTSTRAP_SERVERS=10.178.0.3:9092" >> .env
+            echo "N8N_WEBHOOK_URL=http://10.178.0.3:5678/webhook/ittaeok-schedule-confirmed" >> .env
+
+            # Spring 최신 이미지
             echo "DOCKER_IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest" >> .env
-            
-            echo "Updated Secret Manager Values"
-            
-            # Docker Hub 로그인
+
             echo "Logging in to Docker Hub..."
             echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login \
-            -u "${{ secrets.DOCKER_USERNAME }}" \
-            --password-stdin
-            
-            # 기존 컨테이너 제거
-            echo "Stopping existing containers..."
-            sudo docker-compose down || true
-            
-            # 이미지 정리
-            echo "Cleaning up old images..."
-            sudo docker image prune -f
-            sudo docker rmi ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest || true
-            sudo docker system prune -f || true
-            
-            # Docker Hub에서 최신 이미지 가져오기
-            echo "Pulling latest image..."
-            sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest --disable-content-trust
-            
-            # 컨테이너 실행
-            echo "Starting containers with updated configuration..."
-            sudo docker-compose up -d
-            
-            # 컨테이너 정상 여부 확인
+              -u "${{ secrets.DOCKER_USERNAME }}" \
+              --password-stdin
+
+            echo "Pulling latest Spring image..."
+            sudo docker pull \
+              ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+
+            echo "Starting application containers..."
+            sudo docker-compose \
+              -f docker-compose-app.yml \
+              up -d
+
             echo "Container status:"
-            sudo docker-compose ps
-            
-            echo "Waiting for application to start..."
+            sudo docker-compose \
+              -f docker-compose-app.yml \
+              ps
+
+            echo "Waiting for application..."
             sleep 15
-            
-            # 최신 로그 확인(배포 검증)
+
             echo "Recent logs:"
-            sudo docker-compose logs --tail=30
-            
-            # 서비스 존재 확인
-            echo "=== Deployed Image Info ==="
-            sudo docker images | grep ${{ secrets.DOCKER_IMAGE_NAME }}
-            
+            sudo docker-compose \
+              -f docker-compose-app.yml \
+              logs --tail=50 ittaeok-container
+
             echo "=== Container Info ==="
             sudo docker ps | grep ittaeok
-            
-            # 실제 서버에 값 들어갔는지 확인
-            echo "=== Environment Variables Verification ==="
-            sudo docker exec ittaeok env | grep -E "(DB_URL|JWT_SECRET|REDIS_HOST)" | head -3
 
-      # GitHub Actions 로그 풀력 (배포 성공 표시용)
+            echo "=== Kafka / n8n configuration ==="
+            sudo docker exec ittaeok env | \
+              grep -E "^(KAFKA_BOOTSTRAP_SERVERS|N8N_WEBHOOK_URL)="
+
       - name: Deployment completed
         run: |
           echo "Deployment completed successfully"
           echo "Deployed commit: ${{ github.sha }}"
-          echo "Repository: ${{ github.repository }}"
-          echo "Secret Manager values automatically updated"
