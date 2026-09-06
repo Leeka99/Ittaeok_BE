@@ -100,7 +100,7 @@ jobs:
   # 7. health/log 확인
 
 # build 성공하면 실행됨
-  deploy:
+  deploy-app:
     needs: build
     runs-on: ubuntu-latest
 
@@ -252,14 +252,14 @@ jobs:
           key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           port: 22
           source: "docker-compose-automation.yml"
-          target: "/home/${{ secrets.GCP_AUTOMATION_USERNAME }}/project"
+          target: "/home/${{ secrets.GCP_USERNAME }}/project"
 
       - name: Deploy Automation Server
         uses: appleboy/ssh-action@v1.1.0
         with:
-          host: ${{ secrets.GCP_AUTOMATION_HOST }}
-          username: ${{ secrets.GCP_AUTOMATION_USERNAME }}
-          key: ${{ secrets.GCP_AUTOMATION_SSH_PRIVATE_KEY }}
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
           port: 22
           script: |
             cd $HOME/project
