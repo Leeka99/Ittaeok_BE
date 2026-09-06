@@ -78,6 +78,20 @@ services:
     networks:
       - automation-network
 
+  kafbat-ui:
+    image: ghcr.io/kafbat/kafka-ui:latest
+    container_name: kafbat-ui
+    restart: always
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: ittaeok
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:19092
+    ports:
+      - "8081:8080"
+    networks:
+      - automation-network
+
 volumes:
   n8n_data:
   caddy_data:

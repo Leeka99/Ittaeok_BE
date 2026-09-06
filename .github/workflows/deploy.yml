@@ -234,3 +234,57 @@ jobs:
         run: |
           echo "Deployment completed successfully"
           echo "Deployed commit: ${{ github.sha }}"
+
+  # automation
+  deploy-automation:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose-automation.yml to GCP Automation VM
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.GCP_HOST }}
+          username: ${{ secrets.GCP_USERNAME }}
+          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          port: 22
+          source: "docker-compose-automation.yml"
+          target: "/home/${{ secrets.GCP_AUTOMATION_USERNAME }}/project"
+
+      - name: Deploy Automation Server
+        uses: appleboy/ssh-action@v1.1.0
+        with:
+          host: ${{ secrets.GCP_AUTOMATION_HOST }}
+          username: ${{ secrets.GCP_AUTOMATION_USERNAME }}
+          key: ${{ secrets.GCP_AUTOMATION_SSH_PRIVATE_KEY }}
+          port: 22
+          script: |
+            cd $HOME/project
+            
+            echo "Validating automation compose..."
+            sudo docker compose \
+              -f docker-compose-automation.yml \
+              config --quiet
+            
+            echo "Pulling automation images..."
+            sudo docker compose \
+              -f docker-compose-automation.yml \
+              pull
+            
+            echo "Starting automation containers..."
+            sudo docker compose \
+              -f docker-compose-automation.yml \
+              up -d
+            
+            echo "Automation container status:"
+            sudo docker compose \
+              -f docker-compose-automation.yml \
+              ps
+            
+            echo "Recent automation logs:"
+            sudo docker compose \
+              -f docker-compose-automation.yml \
+              logs --tail=30
