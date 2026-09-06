@@ -249,7 +249,7 @@ jobs:
         with:
           host: ${{ secrets.GCP_AUTOMATION_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
-          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.GCP_AUTOMATION_SSH_PRIVATE_KEY }}
           port: 22
           source: "docker-compose-automation.yml"
           target: "/home/${{ secrets.GCP_USERNAME }}/project"
@@ -259,7 +259,7 @@ jobs:
         with:
           host: ${{ secrets.GCP_AUTOMATION_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
-          key: ${{ secrets.GCP_SSH_PRIVATE_KEY }}
+          key: ${{ secrets.GCP_AUTOMATION_SSH_PRIVATE_KEY }}
           port: 22
           script: |
             cd $HOME/project
