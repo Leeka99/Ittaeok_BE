@@ -11,13 +11,12 @@ name: Deploy to GCP
 
 # PR이 dev 브랜치를 대상으로 닫혔을 때 실행
 on:
-  pull_request:
-    types: [closed]
-    branches: [ dev ]
+  push:
+    branches:
+      - dev
 
 jobs:
   build:
-    if: github.event.pull_request.merged == true # merge 된 PR만 실행
     runs-on: ubuntu-latest # Linux VM에서 실행
     outputs:
       image-digest: ${{ steps.build.outputs.digest }} # docker build 결과값을 다음 job에서 쓰겠다
