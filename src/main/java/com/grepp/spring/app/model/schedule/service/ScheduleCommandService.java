@@ -24,7 +24,7 @@ import com.grepp.spring.infra.error.exceptions.group.UserNotFoundException;
 import com.grepp.spring.infra.error.exceptions.schedule.EventNotActivatedException;
 import com.grepp.spring.infra.error.exceptions.schedule.LocationNotFoundException;
 import com.grepp.spring.infra.error.exceptions.schedule.VoteAlreadyProgressException;
-import com.grepp.spring.infra.automation.kafka.producer.ScheduleEventProducer;
+import com.grepp.spring.infra.automation.kafka.producer.ScheduleConfirmedEventProducer;
 import com.grepp.spring.infra.response.GroupErrorCode;
 import com.grepp.spring.infra.response.ScheduleErrorCode;
 import com.grepp.spring.infra.utils.RandomPicker;
@@ -89,7 +89,7 @@ public class ScheduleCommandService {
 
     private final AutomationTaskService automationTaskService;
 
-    private final ScheduleEventProducer scheduleEventProducer;
+    private final ScheduleConfirmedEventProducer scheduleConfirmedEventProducer;
 
     // 공통 로직
     private Optional<Schedule> getSchedule(Long scheduleId) {
@@ -185,7 +185,7 @@ public class ScheduleCommandService {
             Schedule schedule = getSchedule(scheduleId)
                 .orElseThrow(() -> new NotFoundException("일정을 찾을 수 없습니다."));
 
-            log.info("ScheduleFixedEvent 생성");
+            log.info("ScheduleConfirmedEvent 생성");
             ScheduleConfirmedEvent event = new ScheduleConfirmedEvent(
                 UUID.randomUUID().toString(),
                 schedule.getId(),
@@ -194,8 +194,8 @@ public class ScheduleCommandService {
                 schedule.getEndTime(),
                 LocalDateTime.now()
             );
-            scheduleEventProducer.publishScheduleFixed(event);
-            log.info("ScheduleFixedEvent 생성 완료");
+            scheduleConfirmedEventProducer.publishScheduleFixed(event);
+            log.info("ScheduleConfirmedEvent 생성 완료");
 
             log.info("n8n 호출 시작");
 

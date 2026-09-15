@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class ScheduleEventProducer {
+public class ScheduleConfirmedEventProducer {
 
     private static final String TOPIC = "schedule-confirmed-events";
 
