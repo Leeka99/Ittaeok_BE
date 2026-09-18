@@ -2,7 +2,9 @@ package com.grepp.spring.app.model.automation.service;
 
 import com.grepp.spring.app.model.automation.code.AutomationFailureRequest;
 import com.grepp.spring.app.model.automation.code.AutomationJobStatus;
+import com.grepp.spring.app.model.automation.code.AutomationSuccessRequest;
 import com.grepp.spring.app.model.automation.entity.AutomationJob;
+import com.grepp.spring.app.model.automation.event.AutomationCompletedEvent;
 import com.grepp.spring.app.model.automation.event.AutomationDeferredEvent;
 import com.grepp.spring.app.model.automation.repository.AutomationJobRepository;
 import com.grepp.spring.app.model.schedule.entity.Schedule;
@@ -96,11 +98,11 @@ public class AutomationTaskService {
     }
 
     @Transactional
-    public void handleSuccess(Long scheduleId) {
+    public void handleSuccess(AutomationSuccessRequest request) {
 
         List<AutomationJob> jobs =
             automationJobRepository.findRecentScheduleJobs(
-                scheduleId,
+                request.scheduleId(),
                 PageRequest.of(0, 1)
             );
 
@@ -115,6 +117,15 @@ public class AutomationTaskService {
         }
 
         job.success();
+
+        AutomationCompletedEvent event =
+            new AutomationCompletedEvent(
+                UUID.randomUUID().toString(),
+                request.scheduleId(),
+                LocalDateTime.now()
+            );
+
+        automationEventProducer.publishCompleted(event);
 
         log.info(
             "[자동화 Job 성공 처리] jobId={}, scheduleId={}, status={}",

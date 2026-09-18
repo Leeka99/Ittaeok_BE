@@ -2,12 +2,7 @@ package com.grepp.spring.app.controller.api.automation;
 
 import com.grepp.spring.app.model.automation.code.AutomationFailureRequest;
 import com.grepp.spring.app.model.automation.code.AutomationSuccessRequest;
-import com.grepp.spring.app.model.automation.code.AutomationTrigger;
 import com.grepp.spring.app.model.automation.service.AutomationTaskService;
-import com.grepp.spring.app.model.automation.event.AutomationCompletedEvent;
-import com.grepp.spring.infra.automation.kafka.producer.AutomationEventProducer;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AutomationCallbackController {
 
     private final AutomationTaskService automationTaskService;
-    private final AutomationEventProducer automationEventProducer;
 
     @PostMapping("/failure")
     public ResponseEntity<Void> failure(
@@ -49,16 +43,7 @@ public class AutomationCallbackController {
             request.scheduleId()
         );
 
-        automationTaskService.handleSuccess(request.scheduleId());
-
-        AutomationCompletedEvent event =
-            new AutomationCompletedEvent(
-                UUID.randomUUID().toString(),
-                request.scheduleId(),
-                LocalDateTime.now()
-            );
-
-        automationEventProducer.publishCompleted(event);
+        automationTaskService.handleSuccess(request);
 
         return ResponseEntity.ok().build();
     }
