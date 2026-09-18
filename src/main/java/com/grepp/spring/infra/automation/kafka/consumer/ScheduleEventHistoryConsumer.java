@@ -36,6 +36,7 @@ public class ScheduleEventHistoryConsumer {
 
             eventHistoryRepository.save(history);
 
+
             log.info(
                 "[Kafka 일정 확정 이력 저장] eventId={}, scheduleId={}",
                 event.eventId(),

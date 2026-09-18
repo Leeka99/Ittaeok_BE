@@ -28,7 +28,7 @@ public class AutomationEventProducer {
         );
 
         log.info(
-            "[AutomationRequestedEvent 발행] eventId={}, scheduleId={}",
+            "[자동화 요청 발행] eventId={}, scheduleId={}",
             event.eventId(),
             event.scheduleId()
         );
@@ -56,7 +56,7 @@ public class AutomationEventProducer {
         );
 
         log.info(
-            "[자동화 연기 이벤트 발행] eventId={}, scheduleId={}",
+            "[n8n 자동화 연기 이벤트 발행 - zoom daily limit] eventId={}, scheduleId={}",
             event.eventId(),
             event.scheduleId()
         );

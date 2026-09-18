@@ -39,14 +39,14 @@ public class AutomationEventHistoryConsumer {
             eventHistoryRepository.save(eventHistory);
 
             log.info(
-                "[AutomationDeferredEvent 이력 저장] eventId={}, scheduleId={}",
+                "[n8n 자동화 실패 이벤트 이력 저장 - zoom daily limit] eventId={}, scheduleId={}",
                 event.eventId(),
                 event.scheduleId()
             );
 
         } catch (JsonProcessingException e) {
             log.error(
-                "[AutomationDeferredEvent 직렬화 실패] eventId={}",
+                "[n8n 자동화 실패 이벤트 직렬화 실패 - zoom daily limit] eventId={}",
                 event.eventId(),
                 e
             );
@@ -75,7 +75,7 @@ public class AutomationEventHistoryConsumer {
             eventHistoryRepository.save(eventHistory);
 
             log.info(
-                "[AutomationCompletedEvent 이력 저장] eventId={}, scheduleId={}",
+                "[n8n 자동화 완료 이벤트 이력 저장] eventId={}, scheduleId={}",
                 event.eventId(),
                 event.scheduleId()
             );
